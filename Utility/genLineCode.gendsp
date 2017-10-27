@@ -1,0 +1,132 @@
+{
+	"patcher" : 	{
+		"fileversion" : 1,
+		"appversion" : 		{
+			"major" : 7,
+			"minor" : 3,
+			"revision" : 4,
+			"architecture" : "x86",
+			"modernui" : 1
+		}
+,
+		"rect" : [ 34.0, 79.0, 594.0, 570.0 ],
+		"editing_bgcolor" : [ 0.9, 0.9, 0.9, 1.0 ],
+		"bglocked" : 0,
+		"openinpresentation" : 0,
+		"default_fontsize" : 12.0,
+		"default_fontface" : 0,
+		"default_fontname" : "Arial",
+		"gridonopen" : 1,
+		"gridsize" : [ 15.0, 15.0 ],
+		"gridsnaponopen" : 1,
+		"objectsnaponopen" : 1,
+		"statusbarvisible" : 2,
+		"toolbarvisible" : 1,
+		"lefttoolbarpinned" : 0,
+		"toptoolbarpinned" : 0,
+		"righttoolbarpinned" : 0,
+		"bottomtoolbarpinned" : 0,
+		"toolbars_unpinned_last_save" : 0,
+		"tallnewobj" : 0,
+		"boxanimatetime" : 200,
+		"enablehscroll" : 1,
+		"enablevscroll" : 1,
+		"devicewidth" : 0.0,
+		"description" : "",
+		"digest" : "",
+		"tags" : "",
+		"style" : "",
+		"subpatcher_template" : "",
+		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-6",
+					"linecount" : 2,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 87.0, 472.833374, 150.0, 33.0 ],
+					"style" : "",
+					"text" : "adapted from Gregory Taylor"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-2",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 252.0, 12.5, 273.0, 22.0 ],
+					"style" : "",
+					"text" : "in 2 @comment \"ramp time\" @default 25 @min 0"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"code" : "//declare a single sample delay called previous, to hold the previous output\r\nHistory previous(0);\r\n//declare a variable called change that equals\r\n//the difference between the current and previous input\r\nchange = delta(in1);\r\n//the ramp time will update to be the maximum of\r\n//1 or the number of samples defined by the incoming ramp time\r\n//when change is not zero\r\nrampTimeSamps = latch(maximum(1, mstosamps(in2)), change);\r\n//the difference will equal the most recent input minus the\r\n//previous input, when the input value changes\r\ndifference = latch(in1 - previous, change);\r\n//count samples by 1 and reset when change is not zero\r\nsampleCount = accum(1, change);\r\n//the step size will equal the difference between the current\r\n//and previous destination divided by the ramp time\r\n//to stop interpolating, we multiple the step size by zero\r\n//when the sample count reaches the ramp time \r\nstepSize = (sampleCount<rampTimeSamps) * (difference/rampTimeSamps);\r\n//the output will be the stepSize + the previous output\r\noutput = stepSize + previous;\r\n//output the current value\r\nout1 = output;\r\n//set the previous output to equal the most recent output\r\nprevious = output;",
+					"fontface" : 0,
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-3",
+					"maxclass" : "codebox",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 13.5, 49.666668, 548.0, 406.333344 ],
+					"style" : ""
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-1",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 21.0, 12.5, 221.0, 22.0 ],
+					"style" : "",
+					"text" : "in 1 @comment destination @default 0."
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-4",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 13.5, 478.333374, 37.0, 22.0 ],
+					"style" : "",
+					"text" : "out 1"
+				}
+
+			}
+ ],
+		"lines" : [ 			{
+				"patchline" : 				{
+					"destination" : [ "obj-3", 0 ],
+					"source" : [ "obj-1", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-3", 1 ],
+					"source" : [ "obj-2", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-4", 0 ],
+					"source" : [ "obj-3", 0 ]
+				}
+
+			}
+ ]
+	}
+
+}

@@ -1,0 +1,343 @@
+{
+	"patcher" : 	{
+		"fileversion" : 1,
+		"appversion" : 		{
+			"major" : 7,
+			"minor" : 3,
+			"revision" : 4,
+			"architecture" : "x64",
+			"modernui" : 1
+		}
+,
+		"rect" : [ 49.0, 86.0, 1149.0, 675.0 ],
+		"editing_bgcolor" : [ 0.9, 0.9, 0.9, 1.0 ],
+		"bglocked" : 0,
+		"openinpresentation" : 0,
+		"default_fontsize" : 12.0,
+		"default_fontface" : 0,
+		"default_fontname" : "Arial",
+		"gridonopen" : 1,
+		"gridsize" : [ 15.0, 15.0 ],
+		"gridsnaponopen" : 1,
+		"objectsnaponopen" : 1,
+		"statusbarvisible" : 2,
+		"toolbarvisible" : 1,
+		"lefttoolbarpinned" : 0,
+		"toptoolbarpinned" : 0,
+		"righttoolbarpinned" : 0,
+		"bottomtoolbarpinned" : 0,
+		"toolbars_unpinned_last_save" : 0,
+		"tallnewobj" : 0,
+		"boxanimatetime" : 200,
+		"enablehscroll" : 1,
+		"enablevscroll" : 1,
+		"devicewidth" : 0.0,
+		"description" : "",
+		"digest" : "",
+		"tags" : "",
+		"style" : "",
+		"subpatcher_template" : "",
+		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-14",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 88.5, 53.0, 19.0, 22.0 ],
+					"style" : "",
+					"text" : "2"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-13",
+					"maxclass" : "newobj",
+					"numinlets" : 3,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 50.0, 85.0, 44.0, 22.0 ],
+					"style" : "",
+					"text" : "switch"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-6",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 22.0, 21.5, 30.0, 22.0 ],
+					"style" : "",
+					"text" : "in 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-8",
+					"linecount" : 2,
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 987.0, 321.0, 235.0, 35.0 ],
+					"style" : "",
+					"text" : "param ampVariance @default 0.1 @min 0 @max 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-4",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 655.0, 41.0, 111.0, 22.0 ],
+					"style" : "",
+					"text" : "data storage 100 6"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-3",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 531.0, 64.5, 84.0, 22.0 ],
+					"style" : "",
+					"text" : "buffer window"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-2",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 531.0, 41.0, 107.0, 22.0 ],
+					"style" : "",
+					"text" : "buffer bufferName"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-28",
+					"linecount" : 2,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 987.0, 232.0, 244.0, 33.0 ],
+					"style" : "",
+					"text" : "Variance is a multiplier to the dur which is then added to the start or end of the grain "
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-25",
+					"linecount" : 4,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 148.0, 15.0, 254.0, 60.0 ],
+					"style" : "",
+					"text" : "as of Max 7.3, counter is not supported in code box as far as I can tell\ncounter polls every other sample to check for updates in new grains"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-23",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 987.0, 294.0, 234.0, 22.0 ],
+					"style" : "",
+					"text" : "param endVariance @default 0.5 @min 0"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-22",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 987.0, 268.399994, 234.0, 22.0 ],
+					"style" : "",
+					"text" : "param startVariance @default 0.5 @min 0"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-21",
+					"linecount" : 2,
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 987.0, 149.800003, 248.0, 35.0 ],
+					"style" : "",
+					"text" : "param startPos @default 0.001 @min 0.001 @max 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-20",
+					"linecount" : 2,
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 987.0, 109.199997, 240.0, 35.0 ],
+					"style" : "",
+					"text" : "param numberGrains @default 10 @min 1 @max 100"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-19",
+					"linecount" : 2,
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 987.0, 68.599998, 211.0, 35.0 ],
+					"style" : "",
+					"text" : "param grainSize @default 250 @min 0.00001"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-12",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 987.0, 34.0, 84.0, 22.0 ],
+					"style" : "",
+					"text" : "param scoper"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-1",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 3,
+					"outlettype" : [ "", "", "" ],
+					"patching_rect" : [ 62.5, 21.5, 71.0, 22.0 ],
+					"style" : "",
+					"text" : "counter 1 2"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-5",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 494.0, 773.0, 37.0, 22.0 ],
+					"style" : "",
+					"text" : "out 2"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-17",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 1025.0, 789.0, 117.0, 20.0 ],
+					"style" : "",
+					"text" : "Adapted from JVKR"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-11",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 50.0, 782.0, 37.0, 22.0 ],
+					"style" : "",
+					"text" : "out 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"code" : "rand(clipper) {\r\n\tx = scale(noise(), -1, 1, (clipper * -1), clipper);\r\n\treturn x;\r\n\t}\t\r\n//——————————————————————————\n\ndur = mstosamps(grainSize); \nsoundSize = dim(bufferName); //already in samples\n//——————————————————————————\n\ngrainTrig = in1;\r\nscrubPos = (soundSize - dur) * startPos;\n//——————————————————————————\n\nif (grainTrig == 1) { // when the input becomes 1 for the duration of a sample, attempt to create a new grain\r\n\t\n\tfor (i = 0; i < numberGrains; i += 1) { //calculate each grain \r\n\t\t\n\t\tx = peek(storage, i);\r\n\t\t\n\t\tif (x == 0) { // whenever an entry on the first channel (position) equals to 0, it means it is avaialable for creating a new grain.\r\n\t\t\t\r\n\t\t\tstartAdder = dur * rand(startVariance); //vary the start position\r\n\t\t\tdurAdder = dur * rand(endVariance); //vary the total duration of the grain\n\t\t\tstart = clip((scrubPos + startAdder), 0, soundSize); // a random start value is chosen to which 1 is added, to make sure position is always non-zero (the 'occupied' flag)\n\t\t\tend = clip(((start + dur) + durAdder), start + 1, soundSize); // calculate the ending position of grain pointer\r\n\t\t\tthisGrainLen = end - start;\r\n\t\t\tampRand = 1 - abs(rand(ampVariance)); //randomize the amplitude\r\n\t\t\t\r\n\t\t\t/*\r\n\t\t\tif (i == scoper + 1) {\r\n\t\t\t\tout3 = end;\r\n\t\t\t\t}\r\n\t\t\t*/\r\n\t\t\t\n\t\t\t// store 5 values in the log; \n\t\t\tpoke(storage, start / soundSize, i, 0); // current (start) buffer index between 0 and 1.\n\t\t\tpoke(storage, 1 / soundSize, i, 1); // step value between 0 and 1. This channel will be accumulated upon\n\t\t\tpoke(storage, end / soundSize, i, 2); // end point between 0 and 1\r\n\t\t\tpoke(storage, 1 / thisGrainLen , i, 3); //how much to incriment the window sample \r\n\t\t\tpoke(storage, 0, i, 4); // starting point for the window. This channel will be accumlated upon\r\n\t\t\tpoke(storage, ampRand, i, 5); //generate the amplitude for the grain\r\n\t\t\t\n\t\t\tbreak; // when a new grain has been initialized, break from the for-loop\n\t\t}\n\t}\n}\r\n\r\n\r\n\ngrainSum = 0; // initialize the grain-sum, a sum of all grains in their current state, that represents the sound output of the gen~\r\n\nfor (i = 0; i < numberGrains; i += 1) { \r\n\t\n\tx = peek(storage, i);\r\n\t\n\tif (x != 0) { // whenever position is not equal to zero means this log represents an active grain\r\n\t\t\n\t\tbufPos = peek(storage, i, 0); // current buffer READ position of grain\r\n\t\twinPos = peek(storage, i, 4); // ^^ of window\r\n\t\tamp = peek(storage, i, 5); //get amp of grain\r\n\t\t\r\n\t\tcurrentSample = sample(bufferName, bufPos); // current buffer SAMPLE position of grain\r\n\t\tcurrentWindow = sample(window, winPos); // ^^ of window \r\n\t\t/*\r\n\t\tif (i == scoper) {\r\n\t\t\tout3 = currentSample;\r\n\t\t\t}\r\n\t\tif (i == scoper + 1) {\r\n\t\t\tout2 = currentSample;\r\n\t\t\t}\r\n\t\t*/\r\n\t\t//since each iteration of the loop represents a grain, this value will have the aggregate of all grain by the end of the loop\r\n\t\t\n\t\tgrainSum = grainSum + ((currentSample * currentWindow) * amp); \r\n\t\t\t\t\t\t\t\t\t\t\t\t  \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\tnextPos = bufPos + peek(storage, i, 1); // get the bufPos value for the next round\r\n\t\tnextWin = winPos + peek(storage, i, 3); // get the winPos value...\r\n\t\t\n\t\tendPos = peek(storage, i, 2);\r\n\t\t\n\t\tif (nextPos < endPos) { // test the updated position against the end point\n\t\t\tpoke(storage, nextPos, i, 0); // when it is below, store it so the next SAMPLE we remember where we were\r\n\t\t\tpoke(storage, nextWin, i, 4);\n\t\t}\n\t\telse {\n\t\t\tpoke(storage, 0, i, 0); // when it is above, store the values zero instead to set the flag for this log entry to 'free'\n\t\t}\n\t}\n}\n\nout1 = grainSum;",
+					"fontface" : 0,
+					"fontname" : "Verdana",
+					"fontsize" : 11.0,
+					"id" : "obj-7",
+					"maxclass" : "codebox",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 50.0, 141.0, 916.0, 630.0 ],
+					"style" : ""
+				}
+
+			}
+ ],
+		"lines" : [ 			{
+				"patchline" : 				{
+					"destination" : [ "obj-13", 1 ],
+					"source" : [ "obj-1", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-7", 0 ],
+					"source" : [ "obj-13", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-13", 2 ],
+					"source" : [ "obj-14", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-13", 0 ],
+					"source" : [ "obj-6", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-11", 0 ],
+					"source" : [ "obj-7", 0 ]
+				}
+
+			}
+ ]
+	}
+
+}

@@ -1,0 +1,171 @@
+{
+	"patcher" : 	{
+		"fileversion" : 1,
+		"appversion" : 		{
+			"major" : 7,
+			"minor" : 3,
+			"revision" : 4,
+			"architecture" : "x86",
+			"modernui" : 1
+		}
+,
+		"rect" : [ 76.0, 79.0, 785.0, 682.0 ],
+		"editing_bgcolor" : [ 0.9, 0.9, 0.9, 1.0 ],
+		"bglocked" : 0,
+		"openinpresentation" : 0,
+		"default_fontsize" : 12.0,
+		"default_fontface" : 0,
+		"default_fontname" : "Arial",
+		"gridonopen" : 1,
+		"gridsize" : [ 15.0, 15.0 ],
+		"gridsnaponopen" : 1,
+		"objectsnaponopen" : 1,
+		"statusbarvisible" : 2,
+		"toolbarvisible" : 1,
+		"lefttoolbarpinned" : 0,
+		"toptoolbarpinned" : 0,
+		"righttoolbarpinned" : 0,
+		"bottomtoolbarpinned" : 0,
+		"toolbars_unpinned_last_save" : 0,
+		"tallnewobj" : 0,
+		"boxanimatetime" : 200,
+		"enablehscroll" : 1,
+		"enablevscroll" : 1,
+		"devicewidth" : 0.0,
+		"description" : "",
+		"digest" : "",
+		"tags" : "",
+		"style" : "",
+		"subpatcher_template" : "",
+		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-13",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 605.0, 648.0, 138.0, 22.0 ],
+					"style" : "",
+					"text" : "out 2 @comment phase"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-2",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 525.0, 14.0, 127.0, 22.0 ],
+					"style" : "",
+					"text" : "in 3 @comment index"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-7",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 695.0, 14.0, 61.0, 22.0 ],
+					"style" : "",
+					"text" : "buffer buf"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"code" : "History polarity(0); //this indicates what buffer is being written to. And where to write to in the future\r\n\r\nbinIdx = in3;\r\namp, phase = cartopol(in1, in2);\r\n\r\n//======Write amp between two alternating buffer channels=====\r\nif (polarity == 0) {\r\n\tpoke(buf, amp, binIdx, 0); //write amp\r\n\tif (binIdx == 511) {\r\n\t\tpolarity = 1;\r\n\t\t}\r\n\t}\r\n\r\nelse if (polarity == 1) {\r\n\tpoke(buf, amp, binIdx, 1);\r\n\tif (binIdx == 511) {\r\n\t\tpolarity = 0;\r\n\t\t}\r\n\t}\r\n//============================================================\r\n//====normalize the buffer that's not being written in to=====\r\n\r\nhighAmp = 0; \r\n\r\nif (binIdx == 511 && polarity == 1) {\r\n\t\r\n\tfor (i = 0; i <= 511; i+= 1) { //find the biggest amp\r\n\t\tcheck = peek(buf, i, 0);\r\n\t\thighAmp = maximum(check, highAmp);\r\n\t\t} \r\n\t\t\r\n\tfor (i = 0; i <= 511; i+= 1) { //normalize so biggest == 1. Put in third channel\r\n\t\tcheck = peek(buf, i, 0);\r\n\t\tnewAmp = check / highAmp;\r\n\t\tpoke(buf, newAmp, i, 2);\r\n\t\t}\r\n\t}\r\n\t\r\nelse if (binIdx == 511 && polarity == 0) {\r\n\t\r\n\tfor (i = 0; i <= 511; i+= 1) { //find the biggest amp\r\n\t\tcheck = peek(buf, i, 1);\r\n\t\thighAmp = maximum(check, highAmp);\r\n\t\t} \r\n\t\t\r\n\tfor (i = 0; i <= 511; i+= 1) { //normalize so biggest == 1. Put in forth channel\r\n\t\tcheck = peek(buf, i, 1);\r\n\t\tnewAmp = check / highAmp;\r\n\t\tpoke(buf, newAmp, i, 3);\r\n\t\t}\r\n\t}\t\r\n//============================================================\r\n\r\nout1 = rsub(polarity, 1); //which normalized channel is safe to read from\r\nout2 = phase;\r\n",
+					"fontface" : 0,
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-6",
+					"maxclass" : "codebox",
+					"numinlets" : 3,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 50.0, 71.0, 602.0, 544.0 ],
+					"style" : ""
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-5",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 341.5, 14.0, 117.0, 22.0 ],
+					"style" : "",
+					"text" : "in 2 @comment img"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-1",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 50.0, 14.0, 118.0, 22.0 ],
+					"style" : "",
+					"text" : "in 1 @comment real"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-4",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 50.0, 648.0, 169.0, 22.0 ],
+					"style" : "",
+					"text" : "out 1 @comment rsubPolarity"
+				}
+
+			}
+ ],
+		"lines" : [ 			{
+				"patchline" : 				{
+					"destination" : [ "obj-6", 0 ],
+					"source" : [ "obj-1", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-6", 2 ],
+					"source" : [ "obj-2", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-6", 1 ],
+					"source" : [ "obj-5", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-13", 0 ],
+					"source" : [ "obj-6", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-4", 0 ],
+					"source" : [ "obj-6", 0 ]
+				}
+
+			}
+ ]
+	}
+
+}

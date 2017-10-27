@@ -1,0 +1,113 @@
+{
+	"patcher" : 	{
+		"fileversion" : 1,
+		"appversion" : 		{
+			"major" : 7,
+			"minor" : 3,
+			"revision" : 4,
+			"architecture" : "x86",
+			"modernui" : 1
+		}
+,
+		"rect" : [ 84.0, 129.0, 697.0, 622.0 ],
+		"editing_bgcolor" : [ 0.9, 0.9, 0.9, 1.0 ],
+		"bglocked" : 0,
+		"openinpresentation" : 0,
+		"default_fontsize" : 12.0,
+		"default_fontface" : 0,
+		"default_fontname" : "Arial",
+		"gridonopen" : 1,
+		"gridsize" : [ 15.0, 15.0 ],
+		"gridsnaponopen" : 1,
+		"objectsnaponopen" : 1,
+		"statusbarvisible" : 2,
+		"toolbarvisible" : 1,
+		"lefttoolbarpinned" : 0,
+		"toptoolbarpinned" : 0,
+		"righttoolbarpinned" : 0,
+		"bottomtoolbarpinned" : 0,
+		"toolbars_unpinned_last_save" : 0,
+		"tallnewobj" : 0,
+		"boxanimatetime" : 200,
+		"enablehscroll" : 1,
+		"enablevscroll" : 1,
+		"devicewidth" : 0.0,
+		"description" : "",
+		"digest" : "",
+		"tags" : "",
+		"style" : "",
+		"subpatcher_template" : "",
+		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-6",
+					"linecount" : 2,
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 422.0, 14.0, 176.0, 35.0 ],
+					"style" : "",
+					"text" : "Param averageTime @default 100 @min 1 @max samplerate"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"code" : "Delay thePast(samplerate);\r\nHistory runningSum(0);\r\nHistory i (0);\r\n\r\nsquared = in1 * in1;\r\nchange = change(averageTime); // 0 if no change\r\n\r\n// if someone changed it, reset everything\r\nif (change != 0) {\r\n\trunningSum = 0;\r\n\ti = 0;\r\n\t}\r\n\r\n//build up to the average time\t\r\nif (i < averageTime) {\r\n\t\r\n\trunningSum += squared; //accum up to the averageTime\r\n\tthePast.write(squared); //keep track of where we are\r\n\tmean = runningSum / i;\r\n\tRMS = sqrt(mean);\r\n\ti += 1;\r\n\t\r\n\tout1 = RMS;\r\n\t}\r\n\t\r\nif (i == averageTime) {\r\n\t\r\n\tthePast.write(squared);\r\n\telim = thePast.read(averageTime); //get which sample to get rid of\r\n\trunningSum -= elim; //delete the oldest sample \r\n\trunningSum += squared;\r\n\tmean = runningSum / averageTime;\r\n\tRMS = sqrt(mean);\r\n\t\r\n\tout1 = RMS;\r\n\t}\r\n",
+					"fontface" : 0,
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-5",
+					"maxclass" : "codebox",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 50.0, 67.0, 555.0, 508.0 ],
+					"style" : ""
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-1",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 50.0, 14.0, 30.0, 22.0 ],
+					"style" : "",
+					"text" : "in 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-4",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 50.0, 588.0, 37.0, 22.0 ],
+					"style" : "",
+					"text" : "out 1"
+				}
+
+			}
+ ],
+		"lines" : [ 			{
+				"patchline" : 				{
+					"destination" : [ "obj-5", 0 ],
+					"source" : [ "obj-1", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-4", 0 ],
+					"source" : [ "obj-5", 0 ]
+				}
+
+			}
+ ]
+	}
+
+}
