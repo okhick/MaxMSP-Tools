@@ -5,7 +5,7 @@
 			"major" : 7,
 			"minor" : 3,
 			"revision" : 4,
-			"architecture" : "x86",
+			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
@@ -43,7 +43,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "float" ],
-					"patching_rect" : [ 383.0, 39.0, 23.0, 130.0 ],
+					"patching_rect" : [ 177.0, 42.0, 23.0, 130.0 ],
 					"style" : ""
 				}
 
@@ -55,7 +55,7 @@
 					"numinlets" : 3,
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
-					"patching_rect" : [ 383.0, 15.0, 144.0, 22.0 ],
+					"patching_rect" : [ 177.0, 18.0, 144.0, 22.0 ],
 					"style" : "",
 					"text" : "rampsmooth~ 5000 5000"
 				}
@@ -68,7 +68,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "float" ],
-					"patching_rect" : [ 445.0, 39.0, 76.0, 22.0 ],
+					"patching_rect" : [ 239.0, 42.0, 76.0, 22.0 ],
 					"style" : "",
 					"text" : "snapshot~ 5"
 				}
@@ -87,7 +87,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 408.0, 39.0, 19.0, 130.0 ],
+					"patching_rect" : [ 202.0, 42.0, 19.0, 130.0 ],
 					"size" : 1.0,
 					"style" : ""
 				}
@@ -100,7 +100,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "signal", "signal" ],
-					"patching_rect" : [ 222.0, 145.0, 150.0, 22.0 ],
+					"patching_rect" : [ 16.0, 148.0, 150.0, 22.0 ],
 					"style" : "",
 					"text" : "gen~ @gen presserCode"
 				}
@@ -114,7 +114,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 222.0, 39.0, 150.0, 22.0 ],
+					"patching_rect" : [ 16.0, 42.0, 150.0, 22.0 ],
 					"style" : ""
 				}
 
@@ -127,7 +127,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 222.0, 111.0, 150.0, 22.0 ],
+					"patching_rect" : [ 16.0, 114.0, 150.0, 22.0 ],
 					"style" : ""
 				}
 
@@ -140,7 +140,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 222.0, 63.0, 150.0, 22.0 ],
+					"patching_rect" : [ 16.0, 66.0, 150.0, 22.0 ],
 					"style" : ""
 				}
 
@@ -153,7 +153,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 222.0, 87.0, 150.0, 22.0 ],
+					"patching_rect" : [ 16.0, 90.0, 150.0, 22.0 ],
 					"style" : ""
 				}
 
@@ -166,23 +166,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 222.0, 15.0, 150.0, 22.0 ],
-					"style" : ""
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"angle" : 270.0,
-					"background" : 1,
-					"bgcolor" : [ 0.65098, 0.666667, 0.662745, 1.0 ],
-					"id" : "obj-72",
-					"maxclass" : "panel",
-					"mode" : 0,
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 216.0, 10.0, 314.0, 163.0 ],
-					"proportion" : 0.39,
+					"patching_rect" : [ 16.0, 18.0, 150.0, 22.0 ],
 					"style" : ""
 				}
 
@@ -247,7 +231,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-77", 0 ],
-					"midpoints" : [ 231.5, 170.0, 379.0, 170.0, 379.0, 35.0, 392.5, 35.0 ],
+					"midpoints" : [ 25.5, 173.0, 173.0, 173.0, 173.0, 38.0, 186.5, 38.0 ],
 					"source" : [ "obj-76", 0 ]
 				}
 
@@ -255,15 +239,15 @@
  ],
 		"dependency_cache" : [ 			{
 				"name" : "presserCode.gendsp",
-				"bootpath" : "~/Music/Max/VlaPerc",
-				"patcherrelativepath" : "../../../VlaPerc",
+				"bootpath" : "~/Music/Max/Tools/Dynamics/Compresser",
+				"patcherrelativepath" : ".",
 				"type" : "gDSP",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "averageRMS.gendsp",
-				"bootpath" : "~/Music/Max/VlaPerc",
-				"patcherrelativepath" : "../../../VlaPerc",
+				"bootpath" : "~/Music/Max/Tools/Utility",
+				"patcherrelativepath" : "../../Utility",
 				"type" : "gDSP",
 				"implicit" : 1
 			}

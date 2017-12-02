@@ -151,7 +151,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 148.0, 15.0, 254.0, 60.0 ],
 					"style" : "",
-					"text" : "as of Max 7.3, counter is not supported in code box as far as I can tell\ncounter polls every other sample to check for updates in new grains"
+					"text" : "as of Max 7.3, counter is not supported in code box as far as I can tell (because why?)\ncounter polls every other sample to check for updates in new grains"
 				}
 
 			}
@@ -255,7 +255,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 494.0, 773.0, 37.0, 22.0 ],
+					"patching_rect" : [ 15.0, 112.699997, 37.0, 22.0 ],
 					"style" : "",
 					"text" : "out 2"
 				}
@@ -326,6 +326,15 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-13", 0 ],
+					"order" : 0,
+					"source" : [ "obj-6", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-5", 0 ],
+					"order" : 1,
 					"source" : [ "obj-6", 0 ]
 				}
 
