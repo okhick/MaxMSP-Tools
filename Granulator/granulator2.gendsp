@@ -1,0 +1,118 @@
+{
+	"patcher" : 	{
+		"fileversion" : 1,
+		"appversion" : 		{
+			"major" : 7,
+			"minor" : 3,
+			"revision" : 4,
+			"architecture" : "x86",
+			"modernui" : 1
+		}
+,
+		"rect" : [ 59.0, 104.0, 600.0, 450.0 ],
+		"editing_bgcolor" : [ 0.9, 0.9, 0.9, 1.0 ],
+		"bglocked" : 0,
+		"openinpresentation" : 0,
+		"default_fontsize" : 12.0,
+		"default_fontface" : 0,
+		"default_fontname" : "Arial",
+		"gridonopen" : 1,
+		"gridsize" : [ 15.0, 15.0 ],
+		"gridsnaponopen" : 1,
+		"objectsnaponopen" : 1,
+		"statusbarvisible" : 2,
+		"toolbarvisible" : 1,
+		"lefttoolbarpinned" : 0,
+		"toptoolbarpinned" : 0,
+		"righttoolbarpinned" : 0,
+		"bottomtoolbarpinned" : 0,
+		"toolbars_unpinned_last_save" : 0,
+		"tallnewobj" : 0,
+		"boxanimatetime" : 200,
+		"enablehscroll" : 1,
+		"enablevscroll" : 1,
+		"devicewidth" : 0.0,
+		"description" : "",
+		"digest" : "",
+		"tags" : "",
+		"style" : "",
+		"subpatcher_template" : "",
+		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-1",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 50.0, 14.0, 30.0, 22.0 ],
+					"style" : "",
+					"text" : "in 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-4",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 50.0, 422.0, 37.0, 22.0 ],
+					"style" : "",
+					"text" : "out 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-48",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 130.0, 418.0, 37.0, 22.0 ],
+					"style" : "",
+					"text" : "out 2"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"code" : "rand(clipper) {\n\tclippedNoise = scale(noise(), -1, 1, (clipper * -1), clipper);\n\treturn clippedNoise;\n}\n//——————————————————————————\nBuffer bufferName(\"bufferName\");\nBuffer window(\"window\");\nData storage(100, 6);\n\nParam grainSize(250, min=0.00001);\nParam numberGrains(10, min=1, max=100);\nParam startPos(0.001, min=0.001, max=1);\nParam startVariance(0.5, min=0);\nParam endVariance(0.5, min=0);\nParam ampVariance(0.1, min=0, max=1);\nParam grainSpeed(1, min=0.01, max=10);\n\ngrainMultiplier = 1/grainSpeed;\n\ndur = mstosamps(grainSize) * grainMultiplier;\nsoundSize = dim(bufferName); //already in samples\nrealSoundSize = grainMultiplier * soundSize;\n\n\n//——————————————————————————\ngrainTrig = in1;\nscrubPos = (realSoundSize - dur) * startPos;\n//——————————————————————————\n\n\nif (grainTrig == 1) { // if the input is 1, attempt to create a new grain\n\n\tfor (i = 0; i < numberGrains; i += 1) { //calculate each grain\n\n\t\tx = peek(storage, i, 0);\n\n\t\tif (x == 0) { // whenever an entry on the first channel (position) equals to 0, it means it is avaialable for creating a new grain.\n\n\t\t\tstartAdder = dur * rand(startVariance); //vary the start position\n\t\t\tdurAdder = dur * rand(endVariance); //vary the total duration of the grain\n\t\t\tstart = clip((scrubPos + startAdder), 0, realSoundSize); // a random start value is chosen to which 1 is added, to make sure position is always non-zero (the 'occupied' flag)\n\t\t\tend = clip(((start + dur) + durAdder), start + 1, realSoundSize); // calculate the ending position of grain pointer\n\t\t\tthisGrainLen = (end - start);\n\t\t\tampRand = 1 - abs(rand(ampVariance)); //randomize the amplitude\n\n\t\t\t// store 5 values in the log;\n\t\t\tpoke(storage, start / realSoundSize, i, 0); // current (start) buffer index between 0 and 1.\n\t\t\tpoke(storage, 1 / realSoundSize, i, 1); // step value between 0 and 1. This channel will be accumulated upon\n\t\t\tpoke(storage, end / realSoundSize, i, 2); // end point between 0 and 1\n\t\t\tpoke(storage, 1 / thisGrainLen , i, 3); //how much to incriment the window sample\n\t\t\tpoke(storage, 0, i, 4); // starting point for the window. This channel will be accumlated upon\n\t\t\tpoke(storage, ampRand, i, 5); //generate the amplitude for the grain\n\n\t\t\t//out2 = thisGrainLen;\n\n\t\t\tbreak; // when a new grain has been initialized, break from the for-loop\n\t\t}\n\t}\n}\n//out2 = (1 + test);\n\ngrainSum = 0; // initialize the grain-sum, a sum of all grains in their current state, that represents the sound output of the gen~\n\nfor (i = 0; i < numberGrains; i += 1) {\n\n\tx = peek(storage, i);\n\n\tif (x != 0) { // whenever position is not equal to zero means this log represents an active grain\n\n\n\t\tbufPos = peek(storage, i, 0); // current buffer READ position of grain\n\t\twinPos = peek(storage, i, 4); // ^^ of window\n\t\tamp = peek(storage, i, 5); //get amp of grain\n\n\t\tcurrentSample = sample(bufferName, bufPos); // current buffer SAMPLE position of grain\n\t\tcurrentWindow = sample(window, winPos); // ^^ of window\n\n\t\t\t\tif (i==0) {out2 = currentWindow;}\n\n\t\t//since each iteration of the loop represents a grain, this value will have the aggregate of all grain by the end of the loop\n\n\t\tgrainSum = grainSum + ((currentSample * currentWindow) * amp);\n\n\t\tnextPos = bufPos + peek(storage, i, 1); // get the bufPos value for the next round\n\t\tnextWin = winPos + peek(storage, i, 3); // get the winPos value...\n\n\t\tendPos = peek(storage, i, 2);\n\n\t\tif (nextPos < endPos) { // test the updated position against the end point\n\t\t\tpoke(storage, nextPos, i, 0); // when it is below, store it so the next SAMPLE we remember where we were\n\t\t\tpoke(storage, nextWin, i, 4);\n\t\t}\n\t\telse {\n\t\t\tpoke(storage, 0, i, 0); // when it is above, store the values zero instead to set the flag for this log entry to 'free'\n\t\t}\n\t}\n}\n\nout1 = grainSum;\n",
+					"fontface" : 0,
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-99",
+					"maxclass" : "codebox",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 50.0, 109.0, 500.0, 272.799988 ],
+					"style" : ""
+				}
+
+			}
+ ],
+		"lines" : [ 			{
+				"patchline" : 				{
+					"destination" : [ "obj-99", 0 ],
+					"source" : [ "obj-1", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-4", 0 ],
+					"source" : [ "obj-99", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-48", 0 ],
+					"source" : [ "obj-99", 1 ]
+				}
+
+			}
+ ]
+	}
+
+}

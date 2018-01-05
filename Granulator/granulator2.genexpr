@@ -1,0 +1,96 @@
+rand(clipper) {
+	clippedNoise = scale(noise(), -1, 1, (clipper * -1), clipper);
+	return clippedNoise;
+}
+//——————————————————————————
+Buffer bufferName("bufferName");
+Buffer window("window");
+Data storage(100, 6);
+
+Param grainSize(250, min=0.00001);
+Param numberGrains(10, min=1, max=100);
+Param startPos(0.001, min=0.001, max=1);
+Param startVariance(0.5, min=0);
+Param endVariance(0.5, min=0);
+Param ampVariance(0.1, min=0, max=1);
+Param grainSpeed(1, min=0.01, max=10);
+
+grainMultiplier = 1/grainSpeed;
+
+dur = mstosamps(grainSize) * grainMultiplier;
+soundSize = dim(bufferName); //already in samples
+realSoundSize = grainMultiplier * soundSize;
+
+//——————————————————————————
+grainTrig = in1;
+scrubPos = (realSoundSize - dur) * startPos;
+//——————————————————————————
+
+if (grainTrig == 1) { // if the input is 1, attempt to create a new grain
+
+	for (i = 0; i < numberGrains; i += 1) { //calculate each grain
+
+		x = peek(storage, i, 0);
+
+		if (x == 0) { // whenever an entry on the first channel (position) equals to 0, it means it is avaialable for creating a new grain.
+
+			startAdder = dur * rand(startVariance); //vary the start position
+			durAdder = dur * rand(endVariance); //vary the total duration of the grain
+			start = clip((scrubPos + startAdder), 0, realSoundSize); // a random start value is chosen to which 1 is added, to make sure position is always non-zero (the 'occupied' flag)
+			end = clip(((start + dur) + durAdder), start + 1, realSoundSize); // calculate the ending position of grain pointer
+			thisGrainLen = (end - start);
+			ampRand = 1 - abs(rand(ampVariance)); //randomize the amplitude
+
+			// store 5 values in the log;
+			poke(storage, start / realSoundSize, i, 0); // current (start) buffer index between 0 and 1.
+			poke(storage, 1 / realSoundSize, i, 1); // step value between 0 and 1. This channel will be accumulated upon
+			poke(storage, end / realSoundSize, i, 2); // end point between 0 and 1
+			poke(storage, 1 / thisGrainLen , i, 3); //how much to incriment the window sample
+			poke(storage, 0, i, 4); // starting point for the window. This channel will be accumlated upon
+			poke(storage, ampRand, i, 5); //generate the amplitude for the grain
+
+			//out2 = thisGrainLen;
+
+			break; // when a new grain has been initialized, break from the for-loop
+		}
+	}
+}
+
+grainSum = 0; // initialize the grain-sum, a sum of all grains in their current state, that represents the sound output of the gen~
+
+for (i = 0; i < numberGrains; i += 1) {
+
+	x = peek(storage, i);
+
+	if (x != 0) { // whenever position is not equal to zero means this log represents an active grain
+
+
+		bufPos = peek(storage, i, 0); // current buffer READ position of grain
+		winPos = peek(storage, i, 4); // ^^ of window
+		amp = peek(storage, i, 5); //get amp of grain
+
+		currentSample = sample(bufferName, bufPos); // current buffer SAMPLE position of grain
+		currentWindow = sample(window, winPos); // ^^ of window
+
+				if (i==0) {out2 = currentWindow;}
+
+		//since each iteration of the loop represents a grain, this value will have the aggregate of all grain by the end of the loop
+
+		grainSum = grainSum + ((currentSample * currentWindow) * amp);
+
+		nextPos = bufPos + peek(storage, i, 1); // get the bufPos value for the next round
+		nextWin = winPos + peek(storage, i, 3); // get the winPos value...
+
+		endPos = peek(storage, i, 2);
+
+		if (nextPos < endPos) { // test the updated position against the end point
+			poke(storage, nextPos, i, 0); // when it is below, store it so the next SAMPLE we remember where we were
+			poke(storage, nextWin, i, 4);
+		}
+		else {
+			poke(storage, 0, i, 0); // when it is above, store the values zero instead to set the flag for this log entry to 'free'
+		}
+	}
+}
+
+out1 = grainSum;
