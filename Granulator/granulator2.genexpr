@@ -72,7 +72,7 @@ for (i = 0; i < numberGrains; i += 1) {
 		currentSample = sample(bufferName, bufPos); // current buffer SAMPLE position of grain
 		currentWindow = sample(window, winPos); // ^^ of window
 
-				if (i==0) {out2 = currentWindow;}
+			if (i==0) {out2 = currentWindow;}
 
 		//since each iteration of the loop represents a grain, this value will have the aggregate of all grain by the end of the loop
 
