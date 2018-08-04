@@ -5,7 +5,7 @@
 			"major" : 7,
 			"minor" : 3,
 			"revision" : 4,
-			"architecture" : "x86",
+			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
@@ -65,7 +65,7 @@
 			}
 , 			{
 				"box" : 				{
-					"code" : "//declare a single sample delay called previous, to hold the previous output\r\nHistory previous(0);\r\n//declare a variable called change that equals\r\n//the difference between the current and previous input\r\nchange = delta(in1);\r\n//the ramp time will update to be the maximum of\r\n//1 or the number of samples defined by the incoming ramp time\r\n//when change is not zero\r\nrampTimeSamps = latch(maximum(1, mstosamps(in2)), change);\r\n//the difference will equal the most recent input minus the\r\n//previous input, when the input value changes\r\ndifference = latch(in1 - previous, change);\r\n//count samples by 1 and reset when change is not zero\r\nsampleCount = accum(1, change);\r\n//the step size will equal the difference between the current\r\n//and previous destination divided by the ramp time\r\n//to stop interpolating, we multiple the step size by zero\r\n//when the sample count reaches the ramp time \r\nstepSize = (sampleCount<rampTimeSamps) * (difference/rampTimeSamps);\r\n//the output will be the stepSize + the previous output\r\noutput = stepSize + previous;\r\n//output the current value\r\nout1 = output;\r\n//set the previous output to equal the most recent output\r\nprevious = output;",
+					"code" : "//declare a single sample delay called previous, to hold the previous output\r\nHistory previous(0);\r\n//declare a variable called change that equals\r\n//the difference between the current and previous input\r\nchange = delta(in1);\r\n//the ramp time will update to be the maximum of\r\n//1 or the number of samples defined by the incoming ramp time\r\n//when change is not zero\r\nrampTimeSamps = latch(maximum(1, in2), change);\r\n//the difference will equal the most recent input minus the\r\n//previous input, when the input value changes\r\ndifference = latch(in1 - previous, change);\r\n//count samples by 1 and reset when change is not zero\r\nsampleCount = accum(1, change);\r\n//the step size will equal the difference between the current\r\n//and previous destination divided by the ramp time\r\n//to stop interpolating, we multiple the step size by zero\r\n//when the sample count reaches the ramp time \r\nstepSize = (sampleCount<rampTimeSamps) * (difference/rampTimeSamps);\r\n//the output will be the stepSize + the previous output\r\noutput = stepSize + previous;\r\n//output the current value\r\nout1 = output;\r\n//set the previous output to equal the most recent output\r\nprevious = output;",
 					"fontface" : 0,
 					"fontname" : "Arial",
 					"fontsize" : 12.0,

@@ -4,8 +4,8 @@
 		"appversion" : 		{
 			"major" : 7,
 			"minor" : 3,
-			"revision" : 4,
-			"architecture" : "x86",
+			"revision" : 5,
+			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
@@ -189,7 +189,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 67.0, 291.0, 262.0, 167.0 ],
 					"style" : "",
-					"text" : "The JSON:\n\n{\n  \"interpObjects\" : [\"param\", \"param3\"],\n  \"param\" : [0, 50, 3, 4, 5],\n  \"param2\" : [0, 7, 8, 9, 10],\n  \"param3\" : [10, 6, 4, 2, 0]\n}\n\nThe JSON file should be formatted as above. The interpObjects key indicates which objects should be interpolated. "
+					"text" : "The JSON:\n\n{\n  \"interpObjects\" : [\"param\", \"param3\"],\n  \"param\" : [0, 50, 3, 4, 5],\n  \"param2\" : [0, 7, 8, 9, 10],\n  \"param3\" : [10, 6, 4, 2, 0]\n}\n\nThe JSON file should be formatted as above. The interpObjects key indicates which objects should be interpolated and is MANDATORY. "
 				}
 
 			}

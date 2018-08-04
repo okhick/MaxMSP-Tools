@@ -1,0 +1,186 @@
+{
+	"patcher" : 	{
+		"fileversion" : 1,
+		"appversion" : 		{
+			"major" : 7,
+			"minor" : 3,
+			"revision" : 4,
+			"architecture" : "x64",
+			"modernui" : 1
+		}
+,
+		"rect" : [ 213.0, 126.0, 754.0, 590.0 ],
+		"editing_bgcolor" : [ 0.9, 0.9, 0.9, 1.0 ],
+		"bglocked" : 0,
+		"openinpresentation" : 0,
+		"default_fontsize" : 12.0,
+		"default_fontface" : 0,
+		"default_fontname" : "Arial",
+		"gridonopen" : 1,
+		"gridsize" : [ 15.0, 15.0 ],
+		"gridsnaponopen" : 1,
+		"objectsnaponopen" : 1,
+		"statusbarvisible" : 2,
+		"toolbarvisible" : 1,
+		"lefttoolbarpinned" : 0,
+		"toptoolbarpinned" : 0,
+		"righttoolbarpinned" : 0,
+		"bottomtoolbarpinned" : 0,
+		"toolbars_unpinned_last_save" : 0,
+		"tallnewobj" : 0,
+		"boxanimatetime" : 200,
+		"enablehscroll" : 1,
+		"enablevscroll" : 1,
+		"devicewidth" : 0.0,
+		"description" : "",
+		"digest" : "",
+		"tags" : "",
+		"style" : "",
+		"subpatcher_template" : "",
+		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-9",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 632.0, 229.0, 42.0, 22.0 ],
+					"style" : "",
+					"text" : "fftsize"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-7",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 583.0, 14.0, 152.0, 22.0 ],
+					"style" : "",
+					"text" : "in 5 @comment triggerImg"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-3",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 422.0, 14.0, 157.0, 22.0 ],
+					"style" : "",
+					"text" : "in 4 @comment triggerReal"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-8",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 648.0, 111.0, 88.0, 22.0 ],
+					"style" : "",
+					"text" : "buffer analysis"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-6",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 289.5, 14.0, 127.0, 22.0 ],
+					"style" : "",
+					"text" : "in 3 @comment index"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"code" : "History starter;\r\n\r\nbinIdx = in3;\r\nframeLength = FFTSIZE/2;\r\n\r\n//check if there's a trigger, start\r\nif (cartopol(in4, in5) != 0) {\r\n\tstarter = 1;\r\n\t}\r\n\t\r\n//check if the starter has been activated, write one frame to buffer\r\nif (starter > 0) {\r\n\tamp, phase = cartopol(in1, in2);\r\n\tpoke(analysis, amp, binIdx, 0);\r\n\tpoke(analysis, phase, binIdx, 1);\r\n\t}\r\n\r\n//if a whole frame has been added, normalize to 1, reset starter\r\nif (binIdx == frameLength-1) {\r\n\tmaxAmp = 0;\r\n\tfor (i=0; i<frameLength; i+=1) {\r\n\t\tmaxAmp = max(peek(analysis, i), maxAmp);\r\n\t\t}\r\n\tfor (i=0; i<frameLength; i+=1) {\r\n\t\tpoke(analysis, (peek(analysis, i)/maxAmp), i);\t\t\r\n\t\t}\t\r\n\tstarter = 0;\r\n\t}\r\n\t",
+					"fontface" : 0,
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-5",
+					"maxclass" : "codebox",
+					"numinlets" : 5,
+					"numoutlets" : 0,
+					"patching_rect" : [ 50.0, 60.0, 552.0, 424.0 ],
+					"style" : ""
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-1",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 50.0, 14.0, 118.0, 22.0 ],
+					"style" : "",
+					"text" : "in 1 @comment real"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-2",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 169.75, 14.0, 117.0, 22.0 ],
+					"style" : "",
+					"text" : "in 2 @comment img"
+				}
+
+			}
+ ],
+		"lines" : [ 			{
+				"patchline" : 				{
+					"destination" : [ "obj-5", 0 ],
+					"source" : [ "obj-1", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-5", 1 ],
+					"source" : [ "obj-2", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-5", 3 ],
+					"source" : [ "obj-3", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-5", 2 ],
+					"source" : [ "obj-6", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-5", 4 ],
+					"source" : [ "obj-7", 0 ]
+				}
+
+			}
+ ],
+		"autosave" : 0
+	}
+
+}

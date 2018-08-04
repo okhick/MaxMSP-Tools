@@ -1,0 +1,12 @@
+{
+  "buffer1":{
+    "name":"Freq",
+    "length":2,
+    "pattrList": ["Freq1","Freq2"]
+  },
+  "buffer2":{
+    "name":"Gain",
+    "length":2,
+    "pattrList": ["Gain1","Gain2"]
+  }
+}

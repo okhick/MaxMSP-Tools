@@ -1,0 +1,132 @@
+{
+	"patcher" : 	{
+		"fileversion" : 1,
+		"appversion" : 		{
+			"major" : 7,
+			"minor" : 3,
+			"revision" : 5,
+			"architecture" : "x64",
+			"modernui" : 1
+		}
+,
+		"rect" : [ 34.0, 79.0, 762.0, 687.0 ],
+		"editing_bgcolor" : [ 0.9, 0.9, 0.9, 1.0 ],
+		"bglocked" : 0,
+		"openinpresentation" : 0,
+		"default_fontsize" : 12.0,
+		"default_fontface" : 0,
+		"default_fontname" : "Arial",
+		"gridonopen" : 1,
+		"gridsize" : [ 15.0, 15.0 ],
+		"gridsnaponopen" : 1,
+		"objectsnaponopen" : 1,
+		"statusbarvisible" : 2,
+		"toolbarvisible" : 1,
+		"lefttoolbarpinned" : 0,
+		"toptoolbarpinned" : 0,
+		"righttoolbarpinned" : 0,
+		"bottomtoolbarpinned" : 0,
+		"toolbars_unpinned_last_save" : 0,
+		"tallnewobj" : 0,
+		"boxanimatetime" : 200,
+		"enablehscroll" : 1,
+		"enablevscroll" : 1,
+		"devicewidth" : 0.0,
+		"description" : "",
+		"digest" : "",
+		"tags" : "",
+		"style" : "",
+		"subpatcher_template" : "",
+		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-11",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 460.0, 11.0, 30.0, 22.0 ],
+					"style" : "",
+					"text" : "in 2"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-6",
+					"linecount" : 2,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 487.0, 40.0, 332.0, 33.0 ],
+					"style" : "",
+					"text" : "adapted from Graham Wakefeild and M K in the Max forums.\n "
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"code" : "Buffer freqs(\"freqs\");\r\nBuffer amps(\"amps\");\r\nBuffer bandwidths(\"bandwidths\");\r\n\r\nParam outGain(0.9, min=0, max=1);\r\n\r\n//use a Data to store the previous 'y' values for each resonator\r\nData hy1(16);\r\nData hy2(16);\r\nData calcs(16, 3);\r\n\t//Channel 0 - a\r\n\t//Channel 1 - b\r\n\t//Channel 2 - c\r\n\r\nx = in1;\r\nsum = 0;\r\n\r\n//Do the calculations\r\nif (delta(in2)!=0) {\r\n\tfor (i=0; i<16; i+=1) {\r\n\t\t//calculate freq\r\n\t\tfreq = peek(freqs, i);\r\n\t\tfreq_rps = freq * twopi/samplerate;\r\n\t\t\r\n\t\t//calculate bandwidth\r\n\t\tbw = peek(bandwidths, i);\r\n\t\tbw_rps = abs(bw) * twopi/samplerate;\r\n\t\t\r\n\t\t//calculate coeffs\r\n\t\tc = -exp(-bw_rps);\r\n\t\tpoke(calcs, c, i, 2);\r\n\r\n\t\tb = 2 * cos(freq_rps) * exp(bw_rps * -0.5);\r\n\t\tpoke(calcs, b, i, 1);\r\n\t\t\r\n\t\ta = 1 - (c + b);\r\n\t\tpoke(calcs, a, i, 0);\r\n\t\t}\r\n\t}\r\n\r\n//resonate!\t\r\nfor (i=0; i<16; i+= 1) {\r\n\t\r\n\t// read this resonator's data:\r\n\ty2 = peek(hy2, i);\r\n\ty1 = peek(hy1, i);\r\n\t\r\n\t//read this resonator's coeffs\r\n\tamp = peek(amps, i);\r\n\ta = peek(calcs, i, 0);\r\n\tb = peek(calcs, i, 1);\r\n\tc = peek(calcs, i, 2);\r\n\t\r\n\t// compute next y:\r\n\ty = a*x + b*y1 + c*y2;\r\n\t\r\n\t// update this resonator's history:\r\n\tpoke(hy2, y1, i);\r\n\tpoke(hy1, y, i);\r\n\r\n\t//mix into output:\r\n\tsum += y * amp;\r\n}\r\n\r\ngain = slide((outGain/16), 25, 25);\r\nout1 = sum * gain;",
+					"fontface" : 0,
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-2",
+					"maxclass" : "codebox",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 15.0, 40.0, 464.0, 599.0 ],
+					"style" : ""
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-1",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 15.0, 11.0, 30.0, 22.0 ],
+					"style" : "",
+					"text" : "in 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-4",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 15.0, 650.0, 37.0, 22.0 ],
+					"style" : "",
+					"text" : "out 1"
+				}
+
+			}
+ ],
+		"lines" : [ 			{
+				"patchline" : 				{
+					"destination" : [ "obj-2", 0 ],
+					"source" : [ "obj-1", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-2", 1 ],
+					"source" : [ "obj-11", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-4", 0 ],
+					"source" : [ "obj-2", 0 ]
+				}
+
+			}
+ ]
+	}
+
+}
